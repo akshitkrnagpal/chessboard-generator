@@ -18,13 +18,19 @@ const Home = () => {
   };
 
   const handleBoardSquareClick = (square: Square) => {
-    if (!hand) return;
-    chess.put(hand, square);
+    const piece = chess.get(square);
+    if (hand) {
+      piece.type === hand.type && piece.color == hand.color
+        ? chess.remove(square)
+        : chess.put(hand, square);
+    } else if (piece) {
+      chess.remove(square);
+    }
     forceRerender();
   };
 
   return (
-    <main className="flex flex-col items-center space-y-8">
+    <main className="flex flex-col items-center space-y-6 py-6">
       <Spare color="b" hand={hand} onPieceClick={handleSparePieceClick} />
       <Board chess={chess} onSquareClick={handleBoardSquareClick} />
       <Spare color="w" hand={hand} onPieceClick={handleSparePieceClick} />
