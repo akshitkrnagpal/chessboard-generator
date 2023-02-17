@@ -35,6 +35,7 @@ const CHESS_PIECE_MAP: Record<Color, Record<PieceSymbol, string>> = {
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { searchParams } = new URL(req.url!);
   const fen = searchParams.get("fen") || undefined;
+  const boardSize = parseInt(searchParams.get("size") || "") || BOARD_SIZE;
   const chess = new Chess(fen);
   return new ImageResponse(
     (
@@ -46,7 +47,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               style={{
                 display: "flex",
                 flexDirection: "column",
-                width: BOARD_SIZE / 8,
+                width: boardSize / 8,
               }}
             >
               {[...ranks].reverse().map((rank) => {
@@ -59,8 +60,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      width: BOARD_SIZE / 8,
-                      height: BOARD_SIZE / 8,
+                      width: boardSize / 8,
+                      height: boardSize / 8,
                       backgroundColor:
                         chess.squareColor(square) === "light"
                           ? "#eeeed2"
@@ -70,8 +71,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                     {piece ? (
                       <img
                         alt="Vercel"
-                        width={BOARD_SIZE / 8}
-                        height={BOARD_SIZE / 8}
+                        width={boardSize / 8}
+                        height={boardSize / 8}
                         src={`data:image/png;base64,${
                           CHESS_PIECE_MAP[piece.color][piece.type]
                         }`}
@@ -86,8 +87,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       </div>
     ),
     {
-      width: BOARD_SIZE,
-      height: BOARD_SIZE,
+      width: boardSize,
+      height: boardSize,
     }
   );
 };
