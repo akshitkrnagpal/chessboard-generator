@@ -4,6 +4,7 @@ import clsx from "clsx";
 
 const inter = Inter({
   variable: "--font-inter",
+  subsets: ["latin"],
 });
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
